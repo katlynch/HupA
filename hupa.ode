@@ -1,0 +1,31 @@
+# HupA gene regulatory network in V. vulnificus
+# ODE file for xpp bifurcation analysis
+# Tested with XPPAUT 8.0
+# Kathryn S. Lynch and James P. Keener (2025)
+#
+### system of equations ###
+da/dt=a1*((b1*r^4*h^2)/(b1*r^4*h^2+b2*fs+1)+eps-a)
+dr/dt=a2*(theta*(1)/(b1*r^4*h^2+b2*fs+1)- r)
+dh/dt=a3*extHe/(1+extHe)*a-h
+dfs/dt=k1*((ft-fs)*fe-fs)
+dfe/dt= a4*h - a4m*fe + k2*1/(1+k3*fs)*extFe/(1+extFe) - k1*((ft-fs)*fe-fs)
+#
+### parameters ####
+param extHe=0.1, extFe=0.1, eps=0.01, ft=1
+param a1=1, a2=1, a3=10, a4=1, a4m=10
+param k1=1, k2=10, k3=1
+param b1=4, b2=2
+# change to 0 for HupR knockout 
+param theta=1
+#
+### initialization ###
+init a=1, r=1, h=1, fs=1, fe=1
+#
+### options ###
+@ meth=cvode
+@ xplot=a,yplot=fe
+@ total=100,dt=.05
+@ xlo=-0.1,xhi=2,ylo=-0.1,yhi=2
+@ autoxmin=0,autoxmax=10,autoymin=0,autoymax=5
+@ ds=0.005,dsmin=0.001,dsmax=0.01,parmin=0,parmax=25,nmax=1000
+done
